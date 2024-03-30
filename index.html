@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
   <title>Salary Calculator</title>
+  <script src="salary-calc.js" defer></script>
 </head>
 <body>
   <header>
@@ -11,10 +12,54 @@
   </header>
   <main>
     <h2>Add Employee</h2>
-    <h2>Employees</h2>
+      <form>
+        <input id="first-name" 
+          type="text" 
+          placeholder="First Name"
+          data-testid="firstNameInput"
+          required/>
+        <input id="last-name" 
+          type="text" 
+          placeholder="Last Name"
+          data-testid="lastNameInput"
+          required/>
+        <input id="employee-id" 
+          type="text" 
+          placeholder="ID"
+          data-testid="idInput"
+          required/>   
+        <input id="title" 
+          type="text" 
+          placeholder="Title"
+          data-testid="titleInput"
+          required/>  
+        <input id="annual-salary" 
+          type="text" 
+          placeholder="Annual Salary"
+          data-testid="annualSalaryInput"
+          required/>
+        <button id="submit-employee"
+                onclick="addNewEmployee(event)"
+                data-testid="submitButton">Submit</button>
+      </form>
+    <h2 id="tryme">Employees</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Annual Salary</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr></tr>
+      </tbody>
+  </table>
   </main>
   <footer>
-    <p>Total Monthly</p>
+    <p id="total-monthly" class="over-budget">Total Monthly: </p>
   </footer>
 </body>
 </html>
