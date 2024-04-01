@@ -1,36 +1,20 @@
-
-
-
-/** initial notes
- * 
- * cool effects and css last
- * 
- * consider storing employee in separate object 
- *    could even store with element link attached????
- * 
- * could store in a object with a getter and setter?
- * keep date in array of employee objects 
- * 
- * should employees be stored in a Company???
- *          class w/global total salary,  **maybe next time
- *          employee array of objects 
- *          
- * or just a big object called company w/getters and
- * setters   **do this classes later
- * 
- * company = {totalSalaryOverhead: num, 
- *           employees: [ employee, employee, employee]
- * }
- * 
- *       each employee = { firstName: name, lastName: name, title: title, id: id, annualSalary: salary }
- * 
+/**
+ * Lisa Donohoo
+ * Prime Digital Academy
+ * Tier II Weekend Calculator Challenge
+ * March 30, 2024
  */
+
 
 
 /**
  * Create company datastructure object
  *      -add methods to get/set total salary
  *      -add methods to add/delete an employee
+ *      -add methods to get/set budget
+ *      -add method to validate employee id and make
+ *        sure it is unique (since using as key to 
+ *        delete and find object later)
  */
 const company = { _totalSalary: 0,
                   _budget: 20000,
@@ -102,9 +86,9 @@ function addNewEmployee(event) {
     // check for unique employee id
     if (!company.validEmployeeId(employeeId)) {
       // display error message
-      // highlight employee id
-      // get data again
-      alert('error invalid employee id!!!');
+      // highlight employee id (future)
+      // get data again (future)
+      alert('error invalid employee id!!! You should panic as I did not handle this error lol...');
     }
     // add data to employees object
     company.addEmployee(firstName, lastName, employeeId, title, annualSalary);
@@ -119,6 +103,11 @@ function addNewEmployee(event) {
     annualSalaryElement.value = '';
 }
 
+/**
+ * given a bunch of employee info:
+ *    - creates a new row for our table and inserts the row into the
+ *        table body
+ */
 function displayEmployeeToTable(firstName, lastName, employeeId, title, annualSalary) {
     // reformat currency to be a string with correct commas, decimal, $
     annualSalary = formatCurrency(annualSalary);
@@ -138,6 +127,12 @@ function displayEmployeeToTable(firstName, lastName, employeeId, title, annualSa
     bodyElement.innerHTML += employeeRow;
 }
 
+/**
+ * Pull the updated total salary from the company object,
+ *    find the monthly salary,
+ *    turn on the over-budget style if over budget,
+ *    then format the monthly salary and insert into the footer
+ */
 function updateMonthlySalary() {
   // get the updated total annual salary for all employees
   let totalAnnualSalary = company.totalSalary;
@@ -161,25 +156,20 @@ function updateMonthlySalary() {
   let formattedSalary = formatCurrency(monthlySalary);
   // update the Monthy Salary displayed below the table
   monthlySalaryElement.textContent = formattedSalary;
-  // now add the stupid monthly salary to the actual footer element
-  //    so it passes the stupid tests
-  // document.getElementById("totals-section").textContent = formattedSalary;
 }
 
+/**
+ * format an number into a pretty currency string
+ */
 function formatCurrency(amount) {
   let currencyString = 
     Intl.NumberFormat('US', { style: 'currency', currency: 'USD' }).format(amount);
-    // ***THIS done to pass the tests which expect no decimal value
-    // if decimal values are zero, remove decimal from currency string
-    // let lastIndex = currencyString.length -1;
-    // if (currencyString[lastIndex] === '0' && currencyString[lastIndex-1] === '0') {
-    //   currencyString = currencyString.substring(0, lastIndex-2);
-    // }
-    // currencyString = currencyString.substring(1, currencyString.length);
-    // end try to fix it for the stupid tests
   return currencyString;
 }  
 
+/**
+ * convert a text number string (from input field) to a two-digit decimal number
+ */
 function convertStringToCurrency(string) {
   // convert string to a 2-digit decimal number for storage
   let currency = Number(string);
@@ -189,6 +179,13 @@ function convertStringToCurrency(string) {
   return currency;
 }
 
+/**
+ * delete an employee:
+ *    - first get the custom employee attribute stored on button
+ *    - then use that employee-id to delete the employee in
+ *        the company object (which reduces the total salary also)
+ *    - then updates the monthly salary shown in the footer
+ */
 function deleteEmployee(event) {
   let employeeId = event.target.getAttribute('employee-id');
   company.deleteEmployee(employeeId);
